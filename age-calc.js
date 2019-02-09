@@ -50,11 +50,10 @@ const ageCtrl = (function(){
             if(ageMill < 0) {
                 alert('Please check your birthdate');
             }
-
             if(diffDays > 7) {
-                console.log('Age is greater than 7 days');
+                return 'Age is greater than 7 days';
             } else if(diffDays > 0) {
-                console.log('Age is between days only');
+                return `${diffDays} ${(diffDays > 1) ? 'days' : 'day'}`;
             } else {
                 return -1;
             }
@@ -95,7 +94,8 @@ const controller = (function(uiCtrl,ageCtrl){
         document.querySelector(DOM.calcBtn).addEventListener('click',function(){
         //    ageCtrl.calcAge(birthDate.yearOfBirth);
             const birthDate = uiCtrl.getInput();
-            ageCtrl.calcAge(birthDate.yearOfBirth)
+            const age = ageCtrl.calcAge(birthDate.yearOfBirth);
+            console.log(age);
         });
     };
 

@@ -1,8 +1,25 @@
 const ageCtrl = (function(){
 
+    const d = new Date();
+    const oneDay = 1000*3600*24;
+
+    let Age = function(birthDate){
+        this.birthDate = new Date(birthDate);
+    }
+
+    Age.prototype.compareNow = function(){
+        return d - this.birthDate;
+    };
+
+    Age.prototype.getDiffDays = function(timeDiff){
+        return Math.round(timeDiff / oneDay);
+    };
+
+
+
     return {
         getCurDate: function(){
-            const d = new Date();
+            
 
             let month = d.getMonth() + 1;
 
@@ -23,8 +40,24 @@ const ageCtrl = (function(){
             return date;
 
         },
-        calcAge:function(){
-            
+        calcAge:function(birthDate){
+
+            let age = new Age(birthDate);
+
+            let ageMill = age.compareNow();
+            let diffDays = age.getDiffDays(ageMill);
+
+            if(ageMill < 0) {
+                alert('Please check your birthdate');
+            }
+
+            if(diffDays > 7) {
+                console.log('Age is greater than 7 days');
+            } else if(diffDays > 0) {
+                console.log('Age is between days only');
+            } else {
+                return -1;
+            }
         }
     };
 
@@ -56,9 +89,13 @@ const controller = (function(uiCtrl,ageCtrl){
 
     const DOM = uiCtrl.getDOM();
 
+   
+
     const setupEventListener = function(){
         document.querySelector(DOM.calcBtn).addEventListener('click',function(){
-           
+        //    ageCtrl.calcAge(birthDate.yearOfBirth);
+            const birthDate = uiCtrl.getInput();
+            ageCtrl.calcAge(birthDate.yearOfBirth)
         });
     };
 
@@ -69,6 +106,6 @@ const controller = (function(uiCtrl,ageCtrl){
         }
     }
 
-})(uiCtrl,ageCalc);
+})(uiCtrl,ageCtrl);
 
 controller.init();
